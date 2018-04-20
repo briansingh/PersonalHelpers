@@ -1,0 +1,40 @@
+﻿<div class="row">
+    <section id="content" class="col-md-12">
+        <p class="lead">Custom Functions</p>
+
+        <div class="dropdown">
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownDatabases" data-toggle="dropdown">
+                Databases
+                <span class="caret"></span>
+            </button>
+            <ul class=" dropdown-menu" role="menu" aria-labelledby="dropdownDatabases">
+                <li role="presentation" ng-repeat="d in databases | orderBy:DB"><a href="" ng-click="selectDatabase(d)">{{d.DB}}</a></li>
+            </ul>
+        </div>
+        <p></p>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <p><strong>Current Database:</strong> {{currentDatabase}}</p>
+            </div>
+            <table>
+                <thead>
+
+                    <tr>
+                        <th width="25%">Database</th>
+                        <th width="15%">Function ID</th>
+                        <th width="45%">Name</th>
+                        <th width="15%">Method Call Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="cf in customFunctions">
+                        <td>{{cf.DB}}</td>
+                        <td>{{cf.FunctionID}}</td>
+                        <td>{{cf.FunctionName}}</td>
+                        <td>{{cf.MethodCallCount}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div> 

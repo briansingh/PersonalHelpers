@@ -1,0 +1,535 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Registry1_100Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CustomFunctionAttributes">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="DB" Type="varchar" MaxLength="50" />
+          <Property Name="FunctionID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SHA256" Type="nvarchar" MaxLength="64" />
+        </EntityType>
+        <EntityType Name="MethodCallArguments">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ArgumentValue" Type="nvarchar" MaxLength="512" Nullable="false" />
+          <Property Name="ArgumentIndex" Type="int" Nullable="false" />
+          <Property Name="MethodCall_ID" Type="int" />
+        </EntityType>
+        <EntityType Name="MethodCalls">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomFunctionAttributeID" Type="int" Nullable="false" />
+          <Property Name="MethodID" Type="int" Nullable="false" />
+          <Property Name="CodeStart" Type="int" Nullable="false" />
+          <Property Name="CodeEnd" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Methods">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Namespace" Type="nvarchar" MaxLength="512" Nullable="false" />
+          <Property Name="ClassName" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="MethodType" Type="int" Nullable="false" />
+          <Property Name="MethodName" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CustomFunctions">
+          <Key>
+            <PropertyRef Name="DB" />
+            <PropertyRef Name="FunctionID" />
+          </Key>
+          <Property Name="DB" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="FunctionID" Type="int" Nullable="false" />
+          <Property Name="FunctionName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="SourceCode" Type="varchar" MaxLength="8000" Nullable="false" />
+          <Property Name="CRFVersionID" Type="int" Nullable="false" />
+          <Property Name="Lang" Type="char" MaxLength="2" Nullable="false" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="Updated" Type="datetime" Nullable="false" />
+          <Property Name="ServerSyncDate" Type="datetime" />
+          <Property Name="SourceObjectID" Type="int" />
+          <Property Name="SourceCopyTime" Type="datetime" />
+          <Property Name="OID" Type="varchar" MaxLength="50" />
+          <Property Name="UpdatedAfterSourceCopy" Type="datetime" />
+          <Property Name="IsDraft" Type="bit" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Registry1_100.CodeAnalysis.CustomFunctionSummaries' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="CustomFunctionSummaries">
+          <Key>
+            <PropertyRef Name="DB" />
+            <PropertyRef Name="FunctionID" />
+            <PropertyRef Name="FunctionName" />
+          </Key>
+          <Property Name="DB" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="FunctionID" Type="int" Nullable="false" />
+          <Property Name="FunctionName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="MethodCallCount" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Registry1_100.CodeAnalysis.DatabaseNames' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="DatabaseNames">
+          <Key>
+            <PropertyRef Name="DB" />
+          </Key>
+          <Property Name="DB" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="FunctionCount" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Registry1_100.CodeAnalysis.MethodCallSummaries' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="MethodCallSummaries">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Namespace" />
+            <PropertyRef Name="ClassName" />
+            <PropertyRef Name="MethodName" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Namespace" Type="nvarchar" MaxLength="512" Nullable="false" />
+          <Property Name="ClassName" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="MethodName" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="MethodCallCount" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Registry1_100.CodeAnalysis.Namespaces' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Namespaces">
+          <Key>
+            <PropertyRef Name="NamespaceName" />
+          </Key>
+          <Property Name="NamespaceName" Type="nvarchar" MaxLength="512" Nullable="false" />
+          <Property Name="MethodCount" Type="int" />
+        </EntityType>
+        <Association Name="FK_CodeAnalysis_MethodCallArguments_CodeAnalysis_MethodCalls_MethodCall_ID">
+          <End Role="MethodCalls" Type="Self.MethodCalls" Multiplicity="0..1" />
+          <End Role="MethodCallArguments" Type="Self.MethodCallArguments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MethodCalls">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MethodCallArguments">
+              <PropertyRef Name="MethodCall_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CodeAnalysis_MethodCalls_CodeAnalysis_CustomFunctionAttributes_CustomFunctionAttributeID">
+          <End Role="CustomFunctionAttributes" Type="Self.CustomFunctionAttributes" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MethodCalls" Type="Self.MethodCalls" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomFunctionAttributes">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MethodCalls">
+              <PropertyRef Name="CustomFunctionAttributeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CodeAnalysis_MethodCalls_CodeAnalysis_Methods_MethodID">
+          <End Role="Methods" Type="Self.Methods" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MethodCalls" Type="Self.MethodCalls" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Methods">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MethodCalls">
+              <PropertyRef Name="MethodID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_CustomFunctionAttributes_dbo_CustomFunctions_DB_FunctionID">
+          <End Role="CustomFunctions" Type="Self.CustomFunctions" Multiplicity="0..1" />
+          <End Role="CustomFunctionAttributes" Type="Self.CustomFunctionAttributes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomFunctions">
+              <PropertyRef Name="DB" />
+              <PropertyRef Name="FunctionID" />
+            </Principal>
+            <Dependent Role="CustomFunctionAttributes">
+              <PropertyRef Name="DB" />
+              <PropertyRef Name="FunctionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Registry1_100ModelStoreContainer">
+          <EntitySet Name="CustomFunctionAttributes" EntityType="Self.CustomFunctionAttributes" Schema="CodeAnalysis" store:Type="Tables" />
+          <EntitySet Name="MethodCallArguments" EntityType="Self.MethodCallArguments" Schema="CodeAnalysis" store:Type="Tables" />
+          <EntitySet Name="MethodCalls" EntityType="Self.MethodCalls" Schema="CodeAnalysis" store:Type="Tables" />
+          <EntitySet Name="Methods" EntityType="Self.Methods" Schema="CodeAnalysis" store:Type="Tables" />
+          <EntitySet Name="CustomFunctions" EntityType="Self.CustomFunctions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CustomFunctionSummaries" EntityType="Self.CustomFunctionSummaries" store:Type="Views" store:Schema="CodeAnalysis">
+            <DefiningQuery>SELECT 
+    [CustomFunctionSummaries].[DB] AS [DB], 
+    [CustomFunctionSummaries].[FunctionID] AS [FunctionID], 
+    [CustomFunctionSummaries].[FunctionName] AS [FunctionName], 
+    [CustomFunctionSummaries].[MethodCallCount] AS [MethodCallCount]
+    FROM [CodeAnalysis].[CustomFunctionSummaries] AS [CustomFunctionSummaries]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="DatabaseNames" EntityType="Self.DatabaseNames" store:Type="Views" store:Schema="CodeAnalysis">
+            <DefiningQuery>SELECT 
+    [DatabaseNames].[DB] AS [DB], 
+    [DatabaseNames].[FunctionCount] AS [FunctionCount]
+    FROM [CodeAnalysis].[DatabaseNames] AS [DatabaseNames]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="MethodCallSummaries" EntityType="Self.MethodCallSummaries" store:Type="Views" store:Schema="CodeAnalysis">
+            <DefiningQuery>SELECT 
+    [MethodCallSummaries].[ID] AS [ID], 
+    [MethodCallSummaries].[Namespace] AS [Namespace], 
+    [MethodCallSummaries].[ClassName] AS [ClassName], 
+    [MethodCallSummaries].[MethodName] AS [MethodName], 
+    [MethodCallSummaries].[MethodCallCount] AS [MethodCallCount]
+    FROM [CodeAnalysis].[MethodCallSummaries] AS [MethodCallSummaries]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Namespaces" EntityType="Self.Namespaces" store:Type="Views" store:Schema="CodeAnalysis">
+            <DefiningQuery>SELECT 
+    [Namespaces].[NamespaceName] AS [NamespaceName], 
+    [Namespaces].[MethodCount] AS [MethodCount]
+    FROM [CodeAnalysis].[Namespaces] AS [Namespaces]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_CodeAnalysis_MethodCallArguments_CodeAnalysis_MethodCalls_MethodCall_ID" Association="Self.FK_CodeAnalysis_MethodCallArguments_CodeAnalysis_MethodCalls_MethodCall_ID">
+            <End Role="MethodCalls" EntitySet="MethodCalls" />
+            <End Role="MethodCallArguments" EntitySet="MethodCallArguments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CodeAnalysis_MethodCalls_CodeAnalysis_CustomFunctionAttributes_CustomFunctionAttributeID" Association="Self.FK_CodeAnalysis_MethodCalls_CodeAnalysis_CustomFunctionAttributes_CustomFunctionAttributeID">
+            <End Role="CustomFunctionAttributes" EntitySet="CustomFunctionAttributes" />
+            <End Role="MethodCalls" EntitySet="MethodCalls" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CodeAnalysis_MethodCalls_CodeAnalysis_Methods_MethodID" Association="Self.FK_CodeAnalysis_MethodCalls_CodeAnalysis_Methods_MethodID">
+            <End Role="Methods" EntitySet="Methods" />
+            <End Role="MethodCalls" EntitySet="MethodCalls" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_CustomFunctionAttributes_dbo_CustomFunctions_DB_FunctionID" Association="Self.FK_dbo_CustomFunctionAttributes_dbo_CustomFunctions_DB_FunctionID">
+            <End Role="CustomFunctions" EntitySet="CustomFunctions" />
+            <End Role="CustomFunctionAttributes" EntitySet="CustomFunctionAttributes" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Registry1_100Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CustomFunctionAttribute">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="DB" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FunctionID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SHA256" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MethodCalls" Relationship="Self.FK_CodeAnalysis_MethodCalls_CodeAnalysis_CustomFunctionAttributes_CustomFunctionAttributeID" FromRole="CustomFunctionAttributes" ToRole="MethodCalls" />
+          <NavigationProperty Name="CustomFunction" Relationship="Self.FK_dbo_CustomFunctionAttributes_dbo_CustomFunctions_DB_FunctionID" FromRole="CustomFunctionAttributes" ToRole="CustomFunctions" />
+        </EntityType>
+        <EntityType Name="MethodCallArgument">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ArgumentValue" Type="String" MaxLength="512" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ArgumentIndex" Type="Int32" Nullable="false" />
+          <Property Name="MethodCall_ID" Type="Int32" />
+          <NavigationProperty Name="MethodCall" Relationship="Self.FK_CodeAnalysis_MethodCallArguments_CodeAnalysis_MethodCalls_MethodCall_ID" FromRole="MethodCallArguments" ToRole="MethodCalls" />
+        </EntityType>
+        <EntityType Name="MethodCall">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomFunctionAttributeID" Type="Int32" Nullable="false" />
+          <Property Name="MethodID" Type="Int32" Nullable="false" />
+          <Property Name="CodeStart" Type="Int32" Nullable="false" />
+          <Property Name="CodeEnd" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CustomFunctionAttribute" Relationship="Self.FK_CodeAnalysis_MethodCalls_CodeAnalysis_CustomFunctionAttributes_CustomFunctionAttributeID" FromRole="MethodCalls" ToRole="CustomFunctionAttributes" />
+          <NavigationProperty Name="MethodCallArguments" Relationship="Self.FK_CodeAnalysis_MethodCallArguments_CodeAnalysis_MethodCalls_MethodCall_ID" FromRole="MethodCalls" ToRole="MethodCallArguments" />
+          <NavigationProperty Name="Method" Relationship="Self.FK_CodeAnalysis_MethodCalls_CodeAnalysis_Methods_MethodID" FromRole="MethodCalls" ToRole="Methods" />
+        </EntityType>
+        <EntityType Name="Method">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Namespace" Type="String" MaxLength="512" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ClassName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MethodType" Type="Int32" Nullable="false" />
+          <Property Name="MethodName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="MethodCalls" Relationship="Self.FK_CodeAnalysis_MethodCalls_CodeAnalysis_Methods_MethodID" FromRole="Methods" ToRole="MethodCalls" />
+        </EntityType>
+        <EntityType Name="CustomFunction">
+          <Key>
+            <PropertyRef Name="DB" />
+            <PropertyRef Name="FunctionID" />
+          </Key>
+          <Property Name="DB" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FunctionID" Type="Int32" Nullable="false" />
+          <Property Name="FunctionName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SourceCode" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CRFVersionID" Type="Int32" Nullable="false" />
+          <Property Name="Lang" Type="String" MaxLength="2" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Updated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ServerSyncDate" Type="DateTime" Precision="3" />
+          <Property Name="SourceObjectID" Type="Int32" />
+          <Property Name="SourceCopyTime" Type="DateTime" Precision="3" />
+          <Property Name="OID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UpdatedAfterSourceCopy" Type="DateTime" Precision="3" />
+          <Property Name="IsDraft" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CustomFunctionAttributes" Relationship="Self.FK_dbo_CustomFunctionAttributes_dbo_CustomFunctions_DB_FunctionID" FromRole="CustomFunctions" ToRole="CustomFunctionAttributes" />
+        </EntityType>
+        <Association Name="FK_CodeAnalysis_MethodCalls_CodeAnalysis_CustomFunctionAttributes_CustomFunctionAttributeID">
+          <End Role="CustomFunctionAttributes" Type="Self.CustomFunctionAttribute" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MethodCalls" Type="Self.MethodCall" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomFunctionAttributes">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MethodCalls">
+              <PropertyRef Name="CustomFunctionAttributeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_CustomFunctionAttributes_dbo_CustomFunctions_DB_FunctionID">
+          <End Role="CustomFunctions" Type="Self.CustomFunction" Multiplicity="0..1" />
+          <End Role="CustomFunctionAttributes" Type="Self.CustomFunctionAttribute" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomFunctions">
+              <PropertyRef Name="DB" />
+              <PropertyRef Name="FunctionID" />
+            </Principal>
+            <Dependent Role="CustomFunctionAttributes">
+              <PropertyRef Name="DB" />
+              <PropertyRef Name="FunctionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CodeAnalysis_MethodCallArguments_CodeAnalysis_MethodCalls_MethodCall_ID">
+          <End Role="MethodCalls" Type="Self.MethodCall" Multiplicity="0..1" />
+          <End Role="MethodCallArguments" Type="Self.MethodCallArgument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MethodCalls">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MethodCallArguments">
+              <PropertyRef Name="MethodCall_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CodeAnalysis_MethodCalls_CodeAnalysis_Methods_MethodID">
+          <End Role="Methods" Type="Self.Method" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MethodCalls" Type="Self.MethodCall" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Methods">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MethodCalls">
+              <PropertyRef Name="MethodID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Registry1_100Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CustomFunctionAttributes" EntityType="Self.CustomFunctionAttribute" />
+          <EntitySet Name="MethodCallArguments" EntityType="Self.MethodCallArgument" />
+          <EntitySet Name="MethodCalls" EntityType="Self.MethodCall" />
+          <EntitySet Name="Methods" EntityType="Self.Method" />
+          <EntitySet Name="CustomFunctions" EntityType="Self.CustomFunction" />
+          <AssociationSet Name="FK_CodeAnalysis_MethodCalls_CodeAnalysis_CustomFunctionAttributes_CustomFunctionAttributeID" Association="Self.FK_CodeAnalysis_MethodCalls_CodeAnalysis_CustomFunctionAttributes_CustomFunctionAttributeID">
+            <End Role="CustomFunctionAttributes" EntitySet="CustomFunctionAttributes" />
+            <End Role="MethodCalls" EntitySet="MethodCalls" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_CustomFunctionAttributes_dbo_CustomFunctions_DB_FunctionID" Association="Self.FK_dbo_CustomFunctionAttributes_dbo_CustomFunctions_DB_FunctionID">
+            <End Role="CustomFunctions" EntitySet="CustomFunctions" />
+            <End Role="CustomFunctionAttributes" EntitySet="CustomFunctionAttributes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CodeAnalysis_MethodCallArguments_CodeAnalysis_MethodCalls_MethodCall_ID" Association="Self.FK_CodeAnalysis_MethodCallArguments_CodeAnalysis_MethodCalls_MethodCall_ID">
+            <End Role="MethodCalls" EntitySet="MethodCalls" />
+            <End Role="MethodCallArguments" EntitySet="MethodCallArguments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CodeAnalysis_MethodCalls_CodeAnalysis_Methods_MethodID" Association="Self.FK_CodeAnalysis_MethodCalls_CodeAnalysis_Methods_MethodID">
+            <End Role="Methods" EntitySet="Methods" />
+            <End Role="MethodCalls" EntitySet="MethodCalls" />
+          </AssociationSet>
+          <EntitySet Name="DatabaseNames" EntityType="Registry1_100Model.DatabaseName" />
+          <EntitySet Name="CustomFunctionSummaries" EntityType="Registry1_100Model.CustomFunctionSummary" />
+          <EntitySet Name="MethodCallSummaries" EntityType="Registry1_100Model.MethodCallSummary" />
+          <EntitySet Name="Namespaces" EntityType="Registry1_100Model.Namespace" />
+        </EntityContainer>
+        <EntityType Name="DatabaseName">
+          <Key>
+            <PropertyRef Name="DB" />
+          </Key>
+          <Property Name="DB" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FunctionCount" Type="Int32" />
+        </EntityType>
+        <EntityType Name="CustomFunctionSummary">
+          <Key>
+            <PropertyRef Name="DB" />
+            <PropertyRef Name="FunctionID" />
+            <PropertyRef Name="FunctionName" />
+          </Key>
+          <Property Name="DB" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FunctionID" Type="Int32" Nullable="false" />
+          <Property Name="FunctionName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MethodCallCount" Type="Int32" />
+        </EntityType>
+        <EntityType Name="MethodCallSummary">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Namespace" />
+            <PropertyRef Name="ClassName" />
+            <PropertyRef Name="MethodName" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Namespace" Type="String" Nullable="false" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="ClassName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="MethodName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="MethodCallCount" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Namespace">
+          <Key>
+            <PropertyRef Name="NamespaceName" />
+          </Key>
+          <Property Name="NamespaceName" Type="String" Nullable="false" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="MethodCount" Type="Int32" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Registry1_100ModelStoreContainer" CdmEntityContainer="Registry1_100Entities">
+          <EntitySetMapping Name="CustomFunctionAttributes">
+            <EntityTypeMapping TypeName="Registry1_100Model.CustomFunctionAttribute">
+              <MappingFragment StoreEntitySet="CustomFunctionAttributes">
+                <ScalarProperty Name="DB" ColumnName="DB" />
+                <ScalarProperty Name="FunctionID" ColumnName="FunctionID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="SHA256" ColumnName="SHA256" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MethodCallArguments">
+            <EntityTypeMapping TypeName="Registry1_100Model.MethodCallArgument">
+              <MappingFragment StoreEntitySet="MethodCallArguments">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ArgumentValue" ColumnName="ArgumentValue" />
+                <ScalarProperty Name="ArgumentIndex" ColumnName="ArgumentIndex" />
+                <ScalarProperty Name="MethodCall_ID" ColumnName="MethodCall_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MethodCalls">
+            <EntityTypeMapping TypeName="Registry1_100Model.MethodCall">
+              <MappingFragment StoreEntitySet="MethodCalls">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="CustomFunctionAttributeID" ColumnName="CustomFunctionAttributeID" />
+                <ScalarProperty Name="MethodID" ColumnName="MethodID" />
+                <ScalarProperty Name="CodeStart" ColumnName="CodeStart" />
+                <ScalarProperty Name="CodeEnd" ColumnName="CodeEnd" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Methods">
+            <EntityTypeMapping TypeName="Registry1_100Model.Method">
+              <MappingFragment StoreEntitySet="Methods">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Namespace" ColumnName="Namespace" />
+                <ScalarProperty Name="ClassName" ColumnName="ClassName" />
+                <ScalarProperty Name="MethodType" ColumnName="MethodType" />
+                <ScalarProperty Name="MethodName" ColumnName="MethodName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CustomFunctions">
+            <EntityTypeMapping TypeName="Registry1_100Model.CustomFunction">
+              <MappingFragment StoreEntitySet="CustomFunctions">
+                <ScalarProperty Name="DB" ColumnName="DB" />
+                <ScalarProperty Name="FunctionID" ColumnName="FunctionID" />
+                <ScalarProperty Name="FunctionName" ColumnName="FunctionName" />
+                <ScalarProperty Name="SourceCode" ColumnName="SourceCode" />
+                <ScalarProperty Name="CRFVersionID" ColumnName="CRFVersionID" />
+                <ScalarProperty Name="Lang" ColumnName="Lang" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
+                <ScalarProperty Name="ServerSyncDate" ColumnName="ServerSyncDate" />
+                <ScalarProperty Name="SourceObjectID" ColumnName="SourceObjectID" />
+                <ScalarProperty Name="SourceCopyTime" ColumnName="SourceCopyTime" />
+                <ScalarProperty Name="OID" ColumnName="OID" />
+                <ScalarProperty Name="UpdatedAfterSourceCopy" ColumnName="UpdatedAfterSourceCopy" />
+                <ScalarProperty Name="IsDraft" ColumnName="IsDraft" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DatabaseNames">
+            <EntityTypeMapping TypeName="Registry1_100Model.DatabaseName">
+              <MappingFragment StoreEntitySet="DatabaseNames">
+                <ScalarProperty Name="FunctionCount" ColumnName="FunctionCount" />
+                <ScalarProperty Name="DB" ColumnName="DB" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CustomFunctionSummaries">
+            <EntityTypeMapping TypeName="Registry1_100Model.CustomFunctionSummary">
+              <MappingFragment StoreEntitySet="CustomFunctionSummaries">
+                <ScalarProperty Name="MethodCallCount" ColumnName="MethodCallCount" />
+                <ScalarProperty Name="FunctionName" ColumnName="FunctionName" />
+                <ScalarProperty Name="FunctionID" ColumnName="FunctionID" />
+                <ScalarProperty Name="DB" ColumnName="DB" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MethodCallSummaries">
+            <EntityTypeMapping TypeName="Registry1_100Model.MethodCallSummary">
+              <MappingFragment StoreEntitySet="MethodCallSummaries">
+                <ScalarProperty Name="MethodCallCount" ColumnName="MethodCallCount" />
+                <ScalarProperty Name="MethodName" ColumnName="MethodName" />
+                <ScalarProperty Name="ClassName" ColumnName="ClassName" />
+                <ScalarProperty Name="Namespace" ColumnName="Namespace" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Namespaces">
+            <EntityTypeMapping TypeName="Registry1_100Model.Namespace">
+              <MappingFragment StoreEntitySet="Namespaces">
+                <ScalarProperty Name="MethodCount" ColumnName="MethodCount" />
+                <ScalarProperty Name="NamespaceName" ColumnName="NamespaceName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

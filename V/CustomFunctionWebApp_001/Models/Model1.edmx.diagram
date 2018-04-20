@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="e57240dcd0e445d0984ff15877427bf2" Name="Diagram1">
+        <EntityTypeShape EntityType="Registry1_100Model.CustomFunctionAttribute" Width="1.5" PointX="3" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Registry1_100Model.MethodCallArgument" Width="1.5" PointX="7.5" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="Registry1_100Model.MethodCall" Width="1.5" PointX="5.25" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Registry1_100Model.Method" Width="1.5" PointX="3" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Registry1_100Model.CustomFunction" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="Registry1_100Model.CustomFunctionSummary" Width="1.5" PointX="5.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Registry1_100Model.DatabaseName" Width="1.5" PointX="7.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Registry1_100Model.MethodCallSummary" Width="1.5" PointX="7.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Registry1_100Model.Namespace" Width="1.5" PointX="9.75" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="Registry1_100Model.FK_CodeAnalysis_MethodCalls_CodeAnalysis_CustomFunctionAttributes_CustomFunctionAttributeID" ManuallyRouted="false" />
+        <AssociationConnector Association="Registry1_100Model.FK_dbo_CustomFunctionAttributes_dbo_CustomFunctions_DB_FunctionID" ManuallyRouted="false" />
+        <AssociationConnector Association="Registry1_100Model.FK_CodeAnalysis_MethodCallArguments_CodeAnalysis_MethodCalls_MethodCall_ID" ManuallyRouted="false" />
+        <AssociationConnector Association="Registry1_100Model.FK_CodeAnalysis_MethodCalls_CodeAnalysis_Methods_MethodID" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
