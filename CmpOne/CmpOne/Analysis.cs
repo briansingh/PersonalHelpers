@@ -15,11 +15,36 @@ namespace CmpOne
         private const string PatternForCfExecuteScalar = "CustomFunction.Database.ExecuteScalar\\([.\\w]+,[ ]?([\"\\w]+),.+\\);";
         private const string PatternForCfExecuteDataSet = "CustomFunction.Database.ExecuteDataSet\\([.\\w]+,[ ]?([\"\\w]+),.+\\);";
 
+        //#region DEBUG
+        //private const string DebugSqlForCFDB = "SELECT URL, SourceCode FROM cmpone WHERE SourceCode LIKE '%CustomFunction.Database.%'";
+        //private const string DebugPatternForCFDB = "CustomFunction.Database..+";
+        //private const string DebugSqlForAgent = "SELECT URL, SourceCode FROM cmpone WHERE SourceCode LIKE '%CustomizationAgent.%'";
+        //private const string DebugPatternForAgent = "CustomizationAgent..+";
+        //#endregion
+
         public void Engage(Dictionary<string, HashSet<string>> results)
         {
+            //#region DEBUG
+            //DebugGetStoredProcsCFDB(results);
+            //DebugGetStoredProcsAgent(results);
+            //#endregion
+
             GetStoredProcsUsingCfExecuteScalar(results);
             GetStoredProcsUsingCfExecuteDataSet(results);
         }
+
+        //#region DEBUG
+        //private static void DebugGetStoredProcsCFDB(IDictionary<string, HashSet<string>> results)
+        //{
+        //    var customFunctions = GetListFromDatabase(DebugSqlForCFDB);
+        //    GetStoredProcedures(results, customFunctions, DebugPatternForCFDB);
+        //}
+        //private static void DebugGetStoredProcsAgent(IDictionary<string, HashSet<string>> results)
+        //{
+        //    var customFunctions = GetListFromDatabase(DebugSqlForAgent);
+        //    GetStoredProcedures(results, customFunctions, DebugPatternForAgent);
+        //}
+        //#endregion
 
         private static void GetStoredProcsUsingCfExecuteScalar(IDictionary<string, HashSet<string>> results)
         {
@@ -73,6 +98,11 @@ namespace CmpOne
         {
             foreach (Match cfStatement in cfStatements)
             {
+                //#region DEBUG
+                //MakeNoteOfStoredProcedure(results, customFunction, cfStatement.Value);
+                //continue;
+                //#endregion
+
                 var storedProcName = cfStatement.Groups[1].Value;
                 if (storedProcName.Contains("\""))
                 {
