@@ -10,10 +10,16 @@ namespace CmpOne
     public class Analysis
     {
         private const string ConnectionString = "Server=DDCMCWPD2;Database=RaveDev;uid=RaveDev;pwd=password*8;Connection Timeout=600;Max Pool Size=300;MultipleActiveResultSets=true";
+
         private const string SqlForCfExecuteScalar = "SELECT URL, SourceCode FROM cmpone WHERE SourceCode LIKE '%CustomFunction.Database.ExecuteScalar%'";
-        private const string SqlForCfExecuteDataSet = "SELECT URL, SourceCode FROM cmpone WHERE SourceCode LIKE '%CustomFunction.Database.ExecuteDataSet%'";
         private const string PatternForCfExecuteScalar = "CustomFunction.Database.ExecuteScalar\\([.\\w]+,[ ]?([\"\\w]+),.+\\);";
+
+        private const string SqlForCfExecuteDataSet = "SELECT URL, SourceCode FROM cmpone WHERE SourceCode LIKE '%CustomFunction.Database.ExecuteDataSet%'";
         private const string PatternForCfExecuteDataSet = "CustomFunction.Database.ExecuteDataSet\\([.\\w]+,[ ]?([\"\\w]+),.+\\);";
+
+        private const string SqlForAgent = "SELECT URL, SourceCode FROM cmpone WHERE SourceCode LIKE '%CustomizationAgent%'";
+        private const string PatternForAgentExecuteScalar = "CustomizationAgent.ExecuteScalar\\(([\" \\w]+),.+\\);";
+        private const string PatternForAgentExecuteDataSet = "CustomizationAgent.ExecuteDataSet\\(([\" \\w]+),.+\\);";
 
         //#region DEBUG
         //private const string DebugSqlForCFDB = "SELECT URL, SourceCode FROM cmpone WHERE SourceCode LIKE '%CustomFunction.Database.%'";
@@ -31,6 +37,7 @@ namespace CmpOne
 
             GetStoredProcsUsingCfExecuteScalar(results);
             GetStoredProcsUsingCfExecuteDataSet(results);
+            GetStoredProcsUsingCustomizationAgent(results);
         }
 
         //#region DEBUG
@@ -56,6 +63,12 @@ namespace CmpOne
         {
             var customFunctions = GetListFromDatabase(SqlForCfExecuteDataSet);
             GetStoredProcedures(results, customFunctions, PatternForCfExecuteDataSet);
+        }
+        private static void GetStoredProcsUsingCustomizationAgent(IDictionary<string, HashSet<string>> results)
+        {
+            var customFunctions = GetListFromDatabase(SqlForAgent);
+            GetStoredProcedures(results, customFunctions, PatternForAgentExecuteScalar);
+            GetStoredProcedures(results, customFunctions, PatternForAgentExecuteDataSet);
         }
         private static IEnumerable<CustomFunctionFromDatabase> GetListFromDatabase(string sql)
         {
